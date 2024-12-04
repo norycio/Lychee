@@ -21,7 +21,7 @@ import { useSlideshowFunction } from "@/composables/photo/slideshow";
 import AlbumService from "@/services/album-service";
 import { onKeyStroke } from "@vueuse/core";
 import Button from "primevue/button";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
@@ -56,6 +56,7 @@ start();
 
 function goBack() {
 	clearTimeouts();
+	document.exitFullscreen();
 
 	if (props.albumid !== undefined) {
 		router.push({ name: "album", params: { albumid: props.albumid } });
@@ -66,5 +67,9 @@ function goBack() {
 
 onKeyStroke("Escape", () => {
 	goBack();
+});
+
+onMounted(() => {
+	document.documentElement.requestFullscreen();
 });
 </script>
